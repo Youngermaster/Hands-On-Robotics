@@ -1,0 +1,77 @@
+name: build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python-tests:
+    name: pytest hor_common
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Add uv to PATH
+        run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Sync workspace
+        run: uv sync --extra dev
+
+      - name: mypy
+        run: uv run mypy
+
+      - name: pytest
+        run: uv run pytest -q
+
+      - name: pytest module-01 debouncer
+        run: uv run pytest -q modules/01-digital-io/tests
+
+  mcu-build:
+    name: pio ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - modules/00-getting-started/platforms/arduino-uno
+          - modules/00-getting-started/platforms/esp32
+          - modules/00-getting-started/platforms/pico
+          - modules/01-digital-io/platforms/arduino-uno
+          - modules/01-digital-io/platforms/esp32
+          - modules/01-digital-io/platforms/pico
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      - name: Cache PlatformIO state
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio/.cache
+            ~/.platformio/packages
+            ~/.platformio/platforms
+          key: pio-${{ runner.os }}-${{ hashFiles(format('{0}/platformio.ini', matrix.target)) }}
+          restore-keys: |
+            pio-${{ runner.os }}-
+
+      - name: Build ${{ matrix.target }}
+        run: pio run -d ${{ matrix.target }}

@@ -1,0 +1,75 @@
+# --- Build outputs ----------------------------------------------------------
+build/
+out/
+dist/
+target/
+.pio/
+.pioenvs/
+.piolibdeps/
+.cache/
+.ccache/
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.elf
+*.hex
+*.bin
+*.uf2
+*.map
+*.lst
+
+# --- Python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.python-version
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+# uv.lock IS committed — this is the workspace root and we want reproducible installs.
+
+# --- Node / Expo ------------------------------------------------------------
+node_modules/
+.expo/
+.expo-shared/
+web-build/
+*.tgz
+.pnpm-store/
+pnpm-debug.log*
+yarn-error.log*
+npm-debug.log*
+
+# --- Rust -------------------------------------------------------------------
+Cargo.lock.bak
+**/*.rs.bk
+
+# --- ROS2 -------------------------------------------------------------------
+install/
+log/
+*.repos
+
+# --- Editors / OS -----------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+!.vscode/extensions.json
+*.swp
+*~
+
+# --- Secrets ----------------------------------------------------------------
+*.local
+.env
+.env.*
+!.env.example
+secrets/

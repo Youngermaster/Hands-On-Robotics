@@ -1,0 +1,19 @@
+# Rust workspace for Hands-On-Robotics.
+# Members are added as Rust modules appear (initially empty — Rust is used
+# sparingly because most embedded/SBC examples are simpler in C++ or Python).
+[workspace]
+resolver = "2"
+members = []
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.75"
+license = "MIT"
+authors = ["Juan Manuel Yepes Hoyos (Youngermaster)"]
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+nursery  = { level = "warn", priority = -1 }
