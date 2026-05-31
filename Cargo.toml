@@ -3,7 +3,10 @@
 # sparingly because most embedded/SBC examples are simpler in C++ or Python).
 [workspace]
 resolver = "2"
-members = []
+members = [
+  "modules/05-wireless-wifi/projects/01-telemetry-uplink/server",
+  "modules/05-wireless-wifi/projects/02-bidirectional-control/server",
+]
 
 [workspace.package]
 edition = "2021"

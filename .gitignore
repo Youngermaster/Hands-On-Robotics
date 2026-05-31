@@ -73,3 +73,5 @@ Thumbs.db
 .env.*
 !.env.example
 secrets/
+# Per-firmware Wi-Fi credentials (see secrets.h.example next to each).
+**/src/secrets.h

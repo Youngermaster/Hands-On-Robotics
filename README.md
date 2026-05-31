@@ -46,7 +46,7 @@ and links out to the modules that target it.
 | 02 | analog-and-pwm                                                        | Servo sweep, LED fade, ADC reads                      | Arduino, ESP32, Pico, RPi 4             |
 | 03 | serial-uart                                                           | printf debugging, host ↔ MCU protocol                 | Arduino, ESP32, Pico, RPi 4             |
 | 04 | i2c-spi                                                               | OLED SSD1306, BME280, MPU6050                         | ESP32, Pico, RPi Zero W, RPi 4          |
-| 05 | wireless-wifi                                                         | HTTP server, MQTT                                     | ESP32, RPi Zero W, RPi 4                |
+| 05 | [wireless-wifi](./modules/05-wireless-wifi/)                          | HTTP client + Rust Axum server (two mini-projects)    | **ESP32** (others planned)              |
 | 06 | wireless-ble                                                          | GATT LED service + [React Native Expo app](./apps/ble-led-controller/) | ESP32, RPi 4                            |
 | 07 | motors-and-drivers                                                    | DC via L298N/TB6612, stepper, servo control           | Arduino, ESP32, Pico, RPi 4             |
 | 08 | robot-car-kinematics                                                  | Differential drive, encoder odometry, PID             | ESP32, RPi 4                            |

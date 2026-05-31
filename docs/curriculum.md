@@ -12,7 +12,7 @@ flowchart TD
   M01 --> M03[03 serial-uart]
   M02 --> M04[04 i2c-spi]
   M03 --> M04
-  M04 --> M05[05 wireless-wifi]
+  M01 --> M05[05 wireless-wifi]:::done
   M04 --> M06[06 wireless-ble]
   M02 --> M07[07 motors-and-drivers]
   M07 --> M08[08 robot-car-kinematics]
@@ -39,7 +39,7 @@ Modules in green are implemented; the rest are planned.
 | 02 | analog-and-pwm         | planned     | —                                                                   |
 | 03 | serial-uart            | planned     | —                                                                   |
 | 04 | i2c-spi                | planned     | —                                                                   |
-| 05 | wireless-wifi          | planned     | —                                                                   |
+| 05 | wireless-wifi          | implemented (ESP32) | [`modules/05-wireless-wifi`](../modules/05-wireless-wifi/) — two mini-projects, paired with Rust Axum servers |
 | 06 | wireless-ble           | planned     | — (companion app scaffolded in [`apps/ble-led-controller`](../apps/ble-led-controller/)) |
 | 07 | motors-and-drivers     | planned     | —                                                                   |
 | 08 | robot-car-kinematics   | planned     | —                                                                   |

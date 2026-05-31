@@ -59,6 +59,29 @@ Each `platforms/<board>/README.md` documents:
 - Board-specific quirks (e.g. ESP32 GPIO 6–11 are flash, do not use).
 - Build command, flash command, monitor command.
 
+## Multi-project modules
+
+A module that ships **two or more discrete mini-projects** uses a
+`projects/NN-name/` sublevel. The same module rules apply inside each
+project (its own README, optional `platforms/<board>/`, optional `server/`,
+etc.). Module 05 (wireless-wifi) is the reference for this pattern.
+
+```text
+modules/NN-name/
+├── README.md
+├── bom.md
+├── projects/
+│   ├── 01-foo/
+│   │   ├── README.md
+│   │   ├── platforms/<board>/    # firmware
+│   │   └── server/               # paired server, if any
+│   └── 02-bar/
+│       └── ...
+```
+
+Don't use `projects/` if a module has just one project — keep the layout
+flat in the common case.
+
 ## Build artifacts
 
 Out-of-source builds, always. The top-level `.gitignore` already excludes

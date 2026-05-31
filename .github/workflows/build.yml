@@ -51,6 +51,8 @@ jobs:
           - modules/01-digital-io/platforms/arduino-uno
           - modules/01-digital-io/platforms/esp32
           - modules/01-digital-io/platforms/pico
+          - modules/05-wireless-wifi/projects/01-telemetry-uplink/platforms/esp32
+          - modules/05-wireless-wifi/projects/02-bidirectional-control/platforms/esp32
     steps:
       - uses: actions/checkout@v4
 
@@ -75,3 +77,27 @@ jobs:
 
       - name: Build ${{ matrix.target }}
         run: pio run -d ${{ matrix.target }}
+
+  rust-workspace:
+    name: cargo check + clippy + fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: cargo fmt --check
+        run: cargo fmt --all -- --check
+
+      - name: cargo clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: cargo build
+        run: cargo build --workspace --release
+
+      - name: cargo test
+        run: cargo test --workspace
