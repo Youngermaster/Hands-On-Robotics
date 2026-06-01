@@ -53,6 +53,8 @@ jobs:
           - modules/01-digital-io/platforms/pico
           - modules/05-wireless-wifi/projects/01-telemetry-uplink/platforms/esp32
           - modules/05-wireless-wifi/projects/02-bidirectional-control/platforms/esp32
+          - modules/07-robot-car/projects/01-ble-control/platforms/esp32
+          - modules/07-robot-car/projects/02-wifi-websocket-control/platforms/esp32
     steps:
       - uses: actions/checkout@v4
 

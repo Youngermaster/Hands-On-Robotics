@@ -14,6 +14,9 @@ flowchart TD
   M03 --> M04
   M01 --> M05[05 wireless-wifi]:::done
   M04 --> M06[06 wireless-ble]
+  M05 --> M07[07 robot-car]:::done
+  M01 --> M07
+  M07 -.uses.-> APP2[apps/robot-car-controller]:::app
   M02 --> M07[07 motors-and-drivers]
   M07 --> M08[08 robot-car-kinematics]
   M04 --> M09[09 sensors-and-fusion]
@@ -41,7 +44,7 @@ Modules in green are implemented; the rest are planned.
 | 04 | i2c-spi                | planned     | —                                                                   |
 | 05 | wireless-wifi          | implemented (ESP32) | [`modules/05-wireless-wifi`](../modules/05-wireless-wifi/) — two mini-projects, paired with Rust Axum servers |
 | 06 | wireless-ble           | planned     | — (companion app scaffolded in [`apps/ble-led-controller`](../apps/ble-led-controller/)) |
-| 07 | motors-and-drivers     | planned     | —                                                                   |
+| 07 | robot-car              | implemented (ESP32) | [`modules/07-robot-car`](../modules/07-robot-car/) — BLE + Wi-Fi WebSocket firmwares, paired with [`apps/robot-car-controller`](../apps/robot-car-controller/) |
 | 08 | robot-car-kinematics   | planned     | —                                                                   |
 | 09 | sensors-and-fusion     | planned     | —                                                                   |
 | 10 | computer-vision        | planned     | — (will refactor face-detection code from the older Raspberry-Pi-Codes repo) |

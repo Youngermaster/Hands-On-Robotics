@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" font-family="monospace" font-size="13">
+  <title>Module 07 — ESP32 + L298N wiring</title>
+  <rect width="720" height="460" fill="#fff"/>
+
+  <!-- ESP32 -->
+  <rect x="20" y="40" width="200" height="380" rx="8" fill="#1d6f42" stroke="#063"/>
+  <text x="120" y="62" text-anchor="middle" fill="#fff" font-weight="bold">ESP32-WROOM-32D</text>
+
+  <text x="220" y="120" fill="#fff" text-anchor="end">GPIO 22 (ENA) ●</text>
+  <text x="220" y="160" fill="#fff" text-anchor="end">GPIO 16 (IN1) ●</text>
+  <text x="220" y="200" fill="#fff" text-anchor="end">GPIO 17 (IN2) ●</text>
+  <text x="220" y="240" fill="#fff" text-anchor="end">GPIO 23 (ENB) ●</text>
+  <text x="220" y="280" fill="#fff" text-anchor="end">GPIO 18 (IN3) ●</text>
+  <text x="220" y="320" fill="#fff" text-anchor="end">GPIO 19 (IN4) ●</text>
+  <text x="220" y="380" fill="#fff" text-anchor="end">GND ●</text>
+
+  <!-- L298N -->
+  <rect x="380" y="40" width="200" height="380" rx="6" fill="#a02020" stroke="#600"/>
+  <text x="480" y="62" text-anchor="middle" fill="#fff" font-weight="bold">L298N</text>
+
+  <text x="380" y="120" fill="#fff" text-anchor="start">● ENA</text>
+  <text x="380" y="160" fill="#fff" text-anchor="start">● IN1</text>
+  <text x="380" y="200" fill="#fff" text-anchor="start">● IN2</text>
+  <text x="380" y="240" fill="#fff" text-anchor="start">● ENB</text>
+  <text x="380" y="280" fill="#fff" text-anchor="start">● IN3</text>
+  <text x="380" y="320" fill="#fff" text-anchor="start">● IN4</text>
+  <text x="380" y="380" fill="#fff" text-anchor="start">● GND</text>
+
+  <text x="580" y="120" fill="#fff" text-anchor="start">OUT1 ●</text>
+  <text x="580" y="160" fill="#fff" text-anchor="start">OUT2 ●</text>
+  <text x="580" y="240" fill="#fff" text-anchor="start">OUT3 ●</text>
+  <text x="580" y="280" fill="#fff" text-anchor="start">OUT4 ●</text>
+  <text x="580" y="380" fill="#fff" text-anchor="start">+12V / GND</text>
+
+  <!-- Wires ESP32 -> L298N -->
+  <line x1="220" y1="118" x2="380" y2="118" stroke="#e80" stroke-width="2"/>
+  <line x1="220" y1="158" x2="380" y2="158" stroke="#33c" stroke-width="2"/>
+  <line x1="220" y1="198" x2="380" y2="198" stroke="#33c" stroke-width="2"/>
+  <line x1="220" y1="238" x2="380" y2="238" stroke="#e80" stroke-width="2"/>
+  <line x1="220" y1="278" x2="380" y2="278" stroke="#33c" stroke-width="2"/>
+  <line x1="220" y1="318" x2="380" y2="318" stroke="#33c" stroke-width="2"/>
+  <line x1="220" y1="378" x2="380" y2="378" stroke="#333" stroke-width="2"/>
+
+  <!-- Motors -->
+  <circle cx="660" cy="140" r="18" fill="#999" stroke="#333"/>
+  <text x="660" y="144" text-anchor="middle" fill="#fff" font-size="11">M_R</text>
+  <line x1="580" y1="118" x2="650" y2="130" stroke="#333" stroke-width="2"/>
+  <line x1="580" y1="158" x2="650" y2="148" stroke="#333" stroke-width="2"/>
+
+  <circle cx="660" cy="260" r="18" fill="#999" stroke="#333"/>
+  <text x="660" y="264" text-anchor="middle" fill="#fff" font-size="11">M_L</text>
+  <line x1="580" y1="238" x2="650" y2="250" stroke="#333" stroke-width="2"/>
+  <line x1="580" y1="278" x2="650" y2="270" stroke="#333" stroke-width="2"/>
+
+  <!-- Battery -->
+  <rect x="600" y="370" width="100" height="40" fill="#fbb" stroke="#600"/>
+  <text x="650" y="395" text-anchor="middle">7.4 V battery</text>
+
+  <text x="20" y="442" font-size="11">Orange = PWM (speed). Blue = direction. Black = GND. Battery (+) → L298N +12V; battery (−) → L298N GND → ESP32 GND.</text>
+</svg>
