@@ -47,7 +47,7 @@ and links out to the modules that target it.
 | 03 | serial-uart                                                           | printf debugging, host ↔ MCU protocol                 | Arduino, ESP32, Pico, RPi 4             |
 | 04 | i2c-spi                                                               | OLED SSD1306, BME280, MPU6050                         | ESP32, Pico, RPi Zero W, RPi 4          |
 | 05 | [wireless-wifi](./modules/05-wireless-wifi/)                          | HTTP client + Rust Axum server (two mini-projects)    | **ESP32** (others planned)              |
-| 06 | wireless-ble                                                          | GATT LED service + [React Native Expo app](./apps/ble-led-controller/) | ESP32, RPi 4                            |
+| 06 | [wireless-ble](./modules/06-wireless-ble/)                            | GATT LED service (4 modes) + [React Native Expo app](./apps/ble-led-controller/) | **ESP32** (others planned)      |
 | 07 | [robot-car](./modules/07-robot-car/)                                  | L298N + tank drive, BLE GATT + WebSocket transports   | **ESP32** (others planned) — paired with [`apps/robot-car-controller`](./apps/robot-car-controller/) |
 | 08 | robot-car-kinematics                                                  | Differential drive, encoder odometry, PID             | ESP32, RPi 4                            |
 | 09 | sensors-and-fusion                                                    | HC-SR04, IMU complementary/Kalman filter              | ESP32, RPi 4, Jetson                    |

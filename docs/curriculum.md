@@ -13,7 +13,7 @@ flowchart TD
   M02 --> M04[04 i2c-spi]
   M03 --> M04
   M01 --> M05[05 wireless-wifi]:::done
-  M04 --> M06[06 wireless-ble]
+  M01 --> M06[06 wireless-ble]:::done
   M05 --> M07[07 robot-car]:::done
   M01 --> M07
   M07 -.uses.-> APP2[apps/robot-car-controller]:::app
@@ -43,7 +43,7 @@ Modules in green are implemented; the rest are planned.
 | 03 | serial-uart            | planned     | —                                                                   |
 | 04 | i2c-spi                | planned     | —                                                                   |
 | 05 | wireless-wifi          | implemented (ESP32) | [`modules/05-wireless-wifi`](../modules/05-wireless-wifi/) — two mini-projects, paired with Rust Axum servers |
-| 06 | wireless-ble           | planned     | — (companion app scaffolded in [`apps/ble-led-controller`](../apps/ble-led-controller/)) |
+| 06 | wireless-ble           | implemented (ESP32) | [`modules/06-wireless-ble`](../modules/06-wireless-ble/) — 4-mode LED over BLE GATT, paired with [`apps/ble-led-controller`](../apps/ble-led-controller/) (Expo SDK 57) |
 | 07 | robot-car              | implemented (ESP32) | [`modules/07-robot-car`](../modules/07-robot-car/) — BLE + Wi-Fi WebSocket firmwares, paired with [`apps/robot-car-controller`](../apps/robot-car-controller/) |
 | 08 | robot-car-kinematics   | planned     | —                                                                   |
 | 09 | sensors-and-fusion     | planned     | —                                                                   |

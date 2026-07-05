@@ -1,72 +1,103 @@
 # BLE LED Controller (Expo)
 
-React Native + Expo companion app for **Hands-On-Robotics**. The home
-screen toggles an "LED" indicator and logs to the console. The actual
-BLE GATT call to an ESP32 lands with [Module 06](../../modules/) — for
-now this is a UI scaffold so layout and state can iterate independently
-from the embedded firmware.
+React Native + Expo app that controls the ESP32 onboard LED over BLE
+GATT. Paired with the firmware in
+[`modules/06-wireless-ble/`](../../modules/06-wireless-ble/).
+
+Four modes: **off**, **on**, **slow blink**, **fast blink**. The ESP32
+notifies its confirmed state back to the app, so the UI always reflects
+the truth.
 
 ## Stack
 
-- Expo SDK **56** (per `pnpm create expo-app --template default@sdk-56`).
-- React Native 0.85.
-- expo-router (file-based routing — see `src/app/`).
-- TypeScript strict mode.
+- Expo SDK **57** (scaffolded via `pnpm create expo-app --template default@sdk-57`).
+- React Native 0.86, TypeScript strict.
+- expo-router (file-based routing).
+- `react-native-ble-plx` for BLE (requires a dev build — see below).
+- `@react-native-async-storage/async-storage` for the persisted BLE device name.
+- `expo-network` for the informational network-state panel in Settings.
 
-## Run
+## Quick start
 
 ```bash
 cd apps/ble-led-controller
 pnpm install
-pnpm start          # opens the dev server / QR code
-pnpm ios            # iOS simulator (macOS only)
-pnpm android        # Android emulator
-pnpm web            # web preview
 ```
 
-## What you should see
+BLE is a native module, so you cannot use Expo Go. You need a custom
+dev client. One-time setup:
 
-- Tab 1 (Home): big toggle button, indicator circle that switches colors.
-- Tab 2 (About): roadmap + links.
-- Tapping Toggle logs `[ble-stub] would write LED=on/off to GATT characteristic` to the JS console.
-
-## Wiring up real BLE (Module 06)
-
-When Module 06 lands, replace `writeLedState()` in `src/app/index.tsx` with
-a real GATT write using `react-native-ble-plx`:
-
-```ts
-import { BleManager } from 'react-native-ble-plx';
-// scan → connect → discover → write characteristic
+```bash
+pnpm expo prebuild --clean
+pnpm ios         # builds + runs on iOS simulator/device
+# or
+pnpm android     # builds + runs on Android device (BLE won't work in an emulator)
 ```
 
-The ESP32 firmware will expose a GATT service like:
+After that, `pnpm start` opens the dev server against your new dev client.
 
-| UUID                                   | Property        |
-| -------------------------------------- | --------------- |
-| Service `1234...`                      | LED control     |
-| Characteristic `5678...` (uint8)       | 0 = off, 1 = on |
+## Using it
 
-(Exact UUIDs picked when Module 06 is implemented.)
+1. Flash the ESP32 firmware:
+   ```bash
+   cd modules/06-wireless-ble/platforms/esp32
+   pio run --target upload && pio device monitor
+   ```
+   Confirm you see `[ble] advertising as HOR-LED-BLE`.
+2. Open the app on your phone → **LED** tab → tap **Connect**.
+3. Tap **Off / On / Slow / Fast**. The active tile fills with its color.
+   The ESP32 notifies its confirmed state so if the write races with a
+   disconnect you'll see it snap back.
+
+## Wire protocol
+
+Matches the firmware exactly (see [`modules/06-wireless-ble/README.md`](../../modules/06-wireless-ble/README.md)):
+
+| Char | UUID | Op | Payload |
+| ---- | ---- | -- | ------- |
+| Service | `9a70b2e0-…-0001` | — | — |
+| Mode | `9a70b2e0-…-0002` | WRITE | 1 byte: 0=off, 1=on, 2=slow, 3=fast |
+| State | `9a70b2e0-…-0003` | NOTIFY | 1 byte: current mode as reported by firmware |
+
+## Why `expo-network` shows up in Settings
+
+Bluetooth isn't a "network" in Expo's sense; `expo-network` reports
+Wi-Fi / cellular / airplane-mode state and has **nothing to do with BLE**.
+It's on the Settings screen purely as a teaching hook — the Module 05
+Wi-Fi companion (`apps/robot-car-controller`) uses the same API to reach
+its Axum server, so it's worth being aware of.
 
 ## File layout
 
 ```text
 src/
 ├── app/
-│   ├── _layout.tsx        # tab navigator
-│   ├── index.tsx          # Home → toggle button (this PR)
-│   └── explore.tsx        # About / roadmap
-├── components/            # shared UI primitives (template-provided)
-├── constants/             # theme tokens
-└── hooks/                 # template hooks
+│   ├── _layout.tsx           # tab navigator
+│   ├── index.tsx             # LED Control screen
+│   └── explore.tsx           # Settings screen
+├── components/
+│   ├── app-tabs.tsx          # bottom tabs (LED / Settings)
+│   └── themed-{text,view}.tsx (template)
+├── hooks/
+│   ├── use-settings.ts       # AsyncStorage-backed device name
+│   └── use-network-info.ts   # expo-network wrapper
+├── protocol/
+│   └── led.ts                # UUIDs + LedMode enum + labels
+└── transports/
+    ├── ble.ts                # LedBleTransport (ble-plx)
+    └── useTransport.ts       # React glue for status updates
 ```
 
-## Why is this app at `apps/` and not inside `modules/06-wireless-ble/`?
+## Two Expo apps in the repo?
 
-Long-lived application code, multi-module reach (Module 07 motor control,
-Module 08 robot teleop will all use this same app), and a separate
-Expo/npm/EAS lifecycle. Burying it inside a numbered C++/Python module
-would couple two unrelated build systems and confuse anyone scanning the
-curriculum. See [`CONTRIBUTING.md`](../../CONTRIBUTING.md) for the
-broader rationale.
+Yes:
+
+| App | Module | Transport | Purpose |
+| --- | ------ | --------- | ------- |
+| `apps/ble-led-controller` (this app) | 06 | BLE only | Learn BLE GATT — 4-state LED, no motors |
+| `apps/robot-car-controller` | 07 | BLE **or** WebSocket | Drive a car — joystick + differential drive |
+
+Different lifecycles, different threat models (car needs a watchdog,
+LED doesn't). Sharing a codebase would force one app's churn on the
+other. If you find yourself building a third mobile app for the
+curriculum, that's the right time to extract a common package.
