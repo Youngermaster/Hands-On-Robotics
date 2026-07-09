@@ -11,6 +11,7 @@ import { Section } from '@/design/section';
 import { SettingsDivider, SettingsRow } from '@/design/settings-row';
 import { useTokens } from '@/design/tokens';
 import { Body, Mono } from '@/design/typography';
+import { DiscoverPanel } from '@/features/led/discover-panel';
 import { useNetworkInfo } from '@/hooks/use-network-info';
 import { useSettings } from '@/hooks/use-settings';
 
@@ -50,11 +51,15 @@ export default function SettingsScreen() {
 
           <Section
             eyebrow="Device"
-            caption="Must match the name the firmware advertises. Default: HOR-LED-BLE.">
+            caption="Type the exact name the firmware advertises, or tap Discover to pick from nearby devices.">
             <Card>
               <BleNameInput
                 value={settings.bleDeviceName}
                 onChange={(v) => update('bleDeviceName', v)}
+              />
+              <DiscoverPanel
+                currentName={settings.bleDeviceName}
+                onPick={(name) => update('bleDeviceName', name)}
               />
             </Card>
           </Section>

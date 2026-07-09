@@ -11,7 +11,7 @@
 // Requires a CUSTOM DEV BUILD (react-native-ble-plx is a native module).
 // See ../../README.md for `pnpm expo prebuild` steps.
 
-import { BleManager, type Device, type Subscription } from 'react-native-ble-plx';
+import type { BleManager, Device, Subscription } from 'react-native-ble-plx';
 
 import {
   coerceLedMode,
@@ -20,6 +20,8 @@ import {
   HOR_LED_STATE_CHARACTERISTIC_UUID,
   LedMode,
 } from '@/protocol/led';
+
+import { getBleManager } from './ble-manager';
 
 export type BleState = 'disconnected' | 'connecting' | 'connected' | 'error';
 
@@ -34,8 +36,6 @@ export interface BleStatus {
 const DEFAULT_SCAN_TIMEOUT_MS = 8000;
 
 export class LedBleTransport {
-  private static manager: BleManager | null = null;
-
   private status: BleStatus = { state: 'disconnected' };
   private listeners = new Set<(s: BleStatus) => void>();
   private device: Device | null = null;
@@ -56,7 +56,7 @@ export class LedBleTransport {
   }
 
   async connect(): Promise<void> {
-    const manager = LedBleTransport.getManager();
+    const manager = getBleManager();
     this.setStatus({ state: 'connecting', detail: `scanning for ${this.deviceName}` });
 
     let found: Device | null;
@@ -130,11 +130,6 @@ export class LedBleTransport {
   }
 
   // ---------------------------------------------------------------------------
-
-  private static getManager(): BleManager {
-    LedBleTransport.manager ??= new BleManager();
-    return LedBleTransport.manager;
-  }
 
   private scanForDevice(manager: BleManager): Promise<Device | null> {
     return new Promise((resolve, reject) => {
