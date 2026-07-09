@@ -46,39 +46,6 @@ const dark = {
 
 export type Palette = typeof light;
 
-// --- Per-mode colors (mapping in one place so the bulb + cards agree) ------
-
-import { LedMode } from '@/protocol/led';
-
-export function modeColor(mode: LedMode | undefined, p: Palette): string {
-  switch (mode) {
-    case LedMode.On:
-      return p.accent;
-    case LedMode.Slow:
-      return p.accent;
-    case LedMode.Fast:
-      return p.accent;
-    case LedMode.Off:
-    default:
-      return p.textMuted;
-  }
-}
-
-export function modeDescription(mode: LedMode | undefined): string {
-  switch (mode) {
-    case LedMode.Off:
-      return 'The LED is dark.';
-    case LedMode.On:
-      return 'Steady glow.';
-    case LedMode.Slow:
-      return 'Pulsing at 1 Hz.';
-    case LedMode.Fast:
-      return 'Rapid flashing.';
-    default:
-      return 'Not connected.';
-  }
-}
-
 // --- Scales -----------------------------------------------------------------
 
 export const radii = {

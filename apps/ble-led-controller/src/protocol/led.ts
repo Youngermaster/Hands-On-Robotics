@@ -19,6 +19,7 @@ export const LED_MODES: readonly LedMode[] = [
   LedMode.Fast,
 ] as const;
 
+/** Short, capitalised name for buttons and card titles. */
 export function ledModeLabel(mode: LedMode): string {
   switch (mode) {
     case LedMode.Off:
@@ -32,20 +33,37 @@ export function ledModeLabel(mode: LedMode): string {
   }
 }
 
-export function ledModeColor(mode: LedMode): string {
+/** One-sentence prose for the hero label under the LED bulb. */
+export function ledModeDescription(mode: LedMode | undefined): string {
   switch (mode) {
     case LedMode.Off:
-      return '#475569';
+      return 'The LED is dark.';
     case LedMode.On:
-      return '#22c55e';
+      return 'Steady glow.';
     case LedMode.Slow:
-      return '#f59e0b';
+      return 'Pulsing at 1 Hz.';
     case LedMode.Fast:
-      return '#ef4444';
+      return 'Rapid flashing.';
+    default:
+      return 'Not connected.';
   }
 }
 
-/** Normalize any incoming byte to a defined mode; unknown → Off. */
+/** Compact technical hint shown on each mode card (period / behaviour). */
+export function ledModeHint(mode: LedMode): string {
+  switch (mode) {
+    case LedMode.Off:
+      return 'Dark';
+    case LedMode.On:
+      return 'Steady';
+    case LedMode.Slow:
+      return '500 ms';
+    case LedMode.Fast:
+      return '100 ms';
+  }
+}
+
+/** Normalise any incoming byte to a defined mode; unknown → Off. */
 export function coerceLedMode(byte: number): LedMode {
   return byte === 1 || byte === 2 || byte === 3 ? (byte as LedMode) : LedMode.Off;
 }
